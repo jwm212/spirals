@@ -48,4 +48,23 @@
 
 7. run `snappyHexMesh` and `checkMesh`. Check minimum mesh quality parameters.
 
+    e.g. *Stromatocystites*:
+
+    ```
+    Overall domain bounding box (-0.0477782 -0.03543318 0) (0.04784281 0.05260949 0.06071247)
+    Mesh has 3 geometric (non-empty/wedge) directions (1 1 1)
+    Mesh has 3 solution (non-empty) directions (1 1 1)
+    Max cell openness = 3.689203e-16 OK.
+    Max aspect ratio = 4.711672 OK.
+    Minimum face area = 4.486088e-08. Maximum face area = 4.591988e-06.  Face area magnitudes OK.
+    Min volume = 2.168883e-11. Max volume = 9.839979e-09.  Total volume = 0.0002131412.  Cell volumes OK.
+    Mesh non-orthogonality Max: 43.36838 average: 9.031391
+    Non-orthogonality check OK.
+    Face pyramids OK.
+    Max skewness = 2.778041 OK.
+    Coupled point location match (average 0) OK.
+    ```
+    
+    Open `controlDict` in paraview (using OpenFOAM reader) to visualise mesh. If the mesh seems to only mesh inside the model instead of outside, re-define `locationInMesh`.
+
 8. 

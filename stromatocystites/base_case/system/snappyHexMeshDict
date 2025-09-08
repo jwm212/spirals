@@ -127,7 +127,7 @@ castellatedMeshControls
     // section reachable from the locationInMesh is kept.
     // NOTE: This point should never be on a face, always inside a cell, even
     // after refinement.
-    locationInMesh (-0.0050 0 0.0010);
+    locationInMesh (-0.1 0 0.1);
 
 
     // Whether any faceZones (as specified in the refinementSurfaces)

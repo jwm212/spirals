@@ -8,6 +8,6 @@
 
 apptainer run --bind ~/projects/nhm/jmcdermo/:/mnt --pwd /mnt/spirals/stromatocystites/base_case ~/apps/openfoam_12.sif bash -c "
 foamCleanTutorials &&
-blockMesh"
-#snappyHexMesh -overwrite &&
-#checkMesh"
+blockMesh &&
+snappyHexMesh -overwrite | tee log.snappyHexMesh &&
+checkMesh | tee log.checkMesh"
