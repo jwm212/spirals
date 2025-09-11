@@ -1,0 +1,14 @@
+#!/bin/bash
+# SLURM submit file for Paraview server filename: paraview_server_job.submit
+#SBATCH --partition=gpu
+#SBATCH -t 00:30:00
+#SBATCH --mem=16G
+#SBATCH --gpus=1
+# Set a port for running the paraview server connection
+export PV_ACCESSPORT=11111
+
+# For single CPU server job
+pvserver --server-port=$PV_ACCESSPORT --log=server-log.txt
+
+# For parallel server
+# mpirun -np $SLURM_NTASKS pvserver --server-port=$PV_ACCESSPORT
