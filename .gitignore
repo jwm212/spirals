@@ -24,3 +24,4 @@ postProcessing/
 **/*.DS_Store
 **/*.afdesign
 **/*logs
+server-log.txt
