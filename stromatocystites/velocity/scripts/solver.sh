@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --array=0-5
-#SBATCH --partition=short
+#SBATCH --partition=medium
 #SBATCH --cpus-per-task=24
 #SBATCH --mem=8G
 
