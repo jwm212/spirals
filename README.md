@@ -44,7 +44,7 @@
     
     $\Delta z = 120$ mm $=> n_z = 56$ 
 
-6. run `blockMesh` and visualise alongside the model to check domain size is correct.
+6. run `blockMesh` and visualise in Paraview alongside the model to check domain size is correct.
 
 7. run `snappyHexMesh` and `checkMesh`. Check minimum mesh quality parameters.
 
@@ -68,4 +68,7 @@
     Open `controlDict` in paraview (using OpenFOAM reader) to visualise mesh. If the mesh seems to only mesh inside the model instead of outside, re-define `locationInMesh`.
 
 ## Orientation sensitivity study:
-varying orientation of *Stromatocystites* from 0 to 180$\deg$ in 45$\deg$ increments. orientations above 180 not needed because of the 2-1-2 symmetry of the organism and the symmetrical fluid flow. 
+Varying orientation of *Stromatocystites* from 0 to 180$\deg$ in 45$\deg$ increments. orientations above 180 not needed because of the 2-1-2 symmetry of the organism and the symmetrical fluid flow. 
+
+## Velocity sensitivity study:
+Varying current velocity from 0.05-0.5m/s to test sensitivity of flow. 
