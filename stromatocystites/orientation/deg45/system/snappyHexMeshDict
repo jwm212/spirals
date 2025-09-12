@@ -31,7 +31,7 @@ geometry
     HH
     {
         type    triSurfaceMesh;
-	    file    "stromatocystites_rescaled.stl"      
+	    file    "stromatocystites_rescaled_45.stl"      
         name    HH;
     } 
 };
