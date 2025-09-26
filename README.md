@@ -72,3 +72,10 @@ Varying orientation of *Stromatocystites* from 0 to 180$\deg$ in 45$\deg$ increm
 
 ## Velocity sensitivity study:
 Varying current velocity from 0.05-0.5m/s to test sensitivity of flow. 
+
+
+# TODO:
+
+[ ] Set up U_profiles extract and plot in velocity 
+
+[ ] Re-run orientation
