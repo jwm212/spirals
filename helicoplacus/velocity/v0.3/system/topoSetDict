@@ -9,47 +9,35 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      p;
+    class       dictionary;
+    object      topoSetDict;
 }
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -2 0 0 0 0];
-
-
-internalField   uniform 0;
-
-boundaryField
-{   HH
+actions
+(
+    // porousBlockage
     {
-        type            zeroGradient;
-       
+        name    porousBlockageCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (-0.5 -0.5 -1) (0.5 0.5 1);
+        }
     }
-    inlet
     {
-        type            zeroGradient;
+        name    porousBlockage;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        sourceInfo
+        {
+            set porousBlockageCellSet;
+        }
     }
-
-    Bottom
-    {
-        type            zeroGradient;
-        
-    }
-
-    leftRightTop
-    {
-        type            slip;
-        
-    }
-   outlet
-    {
-        type            fixedValue;
-        value           uniform 0;
-        
-    }
-
-    
-}
-
+);
 
 // ************************************************************************* //
