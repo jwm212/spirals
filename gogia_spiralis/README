@@ -1,0 +1,18 @@
+# Gogia spiralis simulation setup:
+
+# Domain size:
+$L = 35$ mm, so
+    
+$\Delta (+x) = 10L = 350$ mm 
+
+$\Delta (-x) = 4L = 140$ mm
+
+$=> (-0.14 \leq x \leq 0.35)$ m
+
+$\Delta(\pm y) = 4L = 140$ mm
+    
+$=> (-0.14 \leq y \leq 0.14)$ m
+
+$\Delta(+z) = 4L = 140$ mm
+
+$=> (0 \leq z \leq 0.14)$ m
