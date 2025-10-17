@@ -93,7 +93,7 @@ castellatedMeshControls
         HH
         {
              
-            level (3 3);  // (2 2)
+            level (2 4);  // (2 2)
         }
     }
 
