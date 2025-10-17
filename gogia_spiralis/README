@@ -1,18 +1,28 @@
 # Gogia spiralis simulation setup:
 
-# Domain size:
-$L = 35$ mm, so
+## Domain size:
+$L = 65$ mm, so
     
-$\Delta (+x) = 10L = 350$ mm 
+$\Delta (+x) = 10L = 650$ mm 
 
-$\Delta (-x) = 4L = 140$ mm
+$\Delta (-x) = 4L = 260$ mm
 
-$=> (-0.14 \leq x \leq 0.35)$ m
+$=> (-0.26 \leq x \leq 0.65)$ m
 
-$\Delta(\pm y) = 4L = 140$ mm
+$\Delta(\pm y) = 4L = 260$ mm
     
-$=> (-0.14 \leq y \leq 0.14)$ m
+$=> (-0.13 \leq y \leq 0.13)$ m
 
-$\Delta(+z) = 4L = 140$ mm
+$\Delta(+z) = 4L = 260$ mm
 
-$=> (0 \leq z \leq 0.14)$ m
+$=> (0 \leq z \leq 0.26)$ m
+
+## Meshing:
+`levels (2 4)`: 4 refinement levels, resulting in smallest cell width of $~2\times10^{-4}$ m.
+
+CFL condition: (r$u = 0.5 ms^{-1}$)
+$CFL = \frac{u\Delta t}{\Delta x} \geq 1$
+
+$\Delta T = 4\times10^{-4}$ s
+
+This means simulations will take ~2 days.
