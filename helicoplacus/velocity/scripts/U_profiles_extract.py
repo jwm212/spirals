@@ -26,7 +26,7 @@ from paraview.simple import *
 #### disable automatic camera reset on 'Show'
 paraview.simple._DisableFirstRenderCameraReset()
 
-cases = np.array(["deg0", "deg45", "deg90", "deg135", "deg180"])
+cases = np.array(["v0.05", "v0.1", "v0.2", "v0.3", "v0.4", "v0.5"])
 
 arr = np.arange(0,len(cases),1)
 

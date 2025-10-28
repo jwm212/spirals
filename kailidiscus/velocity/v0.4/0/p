@@ -43,9 +43,9 @@ boundaryField
         value           uniform 0;
         
     }
-    sides
+    leftRightTop
     {
-        type            symmetry;
+        type            slip;
     }
 
     

@@ -6,7 +6,8 @@
 #SBATCH --mem=6G
 
 
-cases=(v0.05 v0.1 v0.2 v0.3 v0.4 v0.5)
+#cases=(v0.05 v0.1 v0.2 v0.3 v0.4 v0.5)
+cases=(v0.2)
 apptainer run --bind ~/projects/nhm/jmcdermo/:/mnt --pwd /mnt/spirals/kailidiscus/velocity/${cases[$SLURM_ARRAY_TASK_ID]} ~/apps/openfoam_12.sif bash -c "
 decomposePar &&
 mpirun --use-hwthread-cpus -n 24 --oversubscribe icoFoam -parallel | tee log.icoFoam &&
