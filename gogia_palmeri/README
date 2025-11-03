@@ -1,0 +1,30 @@
+# Gogia palmeri simulation setup:
+
+## Domain size:
+$L = 13$ cm, so
+    
+$\Delta (+x) = 10L = 130$ cm 
+
+$\Delta (-x) = 4L = 52$ cm
+
+$=> (-0.52 \leq x \leq 1.3)$ m
+
+$\Delta(\pm y) = 4L = 52$ cm
+    
+$=> (-0.26 \leq y \leq 0.26)$ m
+
+$\Delta(+z) = 4L = 52$ cm
+
+$=> (0 \leq z \leq 0.52)$ m
+
+## Meshing:
+ - `levels (2 5)`: 5 refinement levels, resulting in smallest cell width of $~3\times10^{-4}$ m.
+
+## Solver:
+ - CFL condition: (r$u = 0.5 ms^{-1}$)
+
+    $CFL = \frac{u\Delta t}{\Delta x} \geq 1$
+
+    $\Delta t = 5\times10^{-4}$ s, meaning simulations will take ~2 days.
+
+ - mesh has ~1.5 million cells, so 8GB was allocated to each job.
