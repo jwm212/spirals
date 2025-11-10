@@ -3,7 +3,7 @@
 #SBATCH --array=0-5
 #SBATCH --partition=medium
 #SBATCH --cpus-per-task=24
-#SBATCH --mem=6G
+#SBATCH --mem=8G
 
 
 cases=(v0.05 v0.1 v0.2 v0.3 v0.4 v0.5)
