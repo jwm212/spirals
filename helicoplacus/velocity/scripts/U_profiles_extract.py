@@ -18,6 +18,8 @@
 # trace generated using paraview version 5.13.2
 import numpy as np
 import paraview
+import glob
+import os
 paraview.compatibility.major = 5
 paraview.compatibility.minor = 13
 
@@ -27,28 +29,54 @@ from paraview.simple import *
 paraview.simple._DisableFirstRenderCameraReset()
 
 cases = np.array(["v0.05", "v0.1", "v0.2", "v0.3", "v0.4", "v0.5"])
-
+velocity = np.array([0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
 arr = np.arange(0,len(cases),1)
 
 for i in arr:
-    vtk = LegacyVTKReader(registrationName= cases[i]+'_40000.vtk', FileNames=['../'+cases[i]+'/VTK/'+cases[i]+'_40000.vtk'])
-    
-    plotOverLine1 = PlotOverLine(registrationName='PlotOverLine1', Input=vtk)
+    vtk_dir = os.path.join('..', cases[i], 'VTK')
+    vtk_files = glob.glob(os.path.join(vtk_dir, '*.vtk'))
+    if not vtk_files:
+        raise FileNotFoundError(f'No .vtk files in {vtk_dir}')
+    # sort by modification time (oldest->newest) and take last 10
+    vtk_files_sorted = sorted(vtk_files, key=os.path.getmtime)
+    last_files = vtk_files_sorted[-10:]
+    print(f'Processing case {cases[i]} with velocity {velocity[i]} m/s using files: {last_files}')
+    # if you prefer lexicographic order (useful when filenames are zero-padded timestamps) use:
+    # last_files = sorted(vtk_files)[-10:]
+    vtk = LegacyVTKReader(registrationName=f'{cases[i]}_last{len(last_files)}.vtk', FileNames=last_files)   
+    # create a new 'Temporal Statistics'
+    temporalStatistics1 = TemporalStatistics(registrationName='TemporalStatistics1', Input=vtk)
+
+    # get active view
+    renderView1 = GetActiveViewOrCreate('RenderView')
+
+    # show data in view
+    temporalStatistics1Display = Show(temporalStatistics1, renderView1, 'UnstructuredGridRepresentation')
+
+    # trace defaults for the display properties.
+    temporalStatistics1Display.Representation = 'Surface'
+
+    # hide data in view
+    Hide(vtk, renderView1)
+    # update the view to ensure updated data information
+    renderView1.Update()
+
+    plotOverLine1 = PlotOverLine(registrationName='PlotOverLine1', Input=temporalStatistics1)
     plotOverLine1.Point1 = [0.05, 0.0, 0.0]
     plotOverLine1.Point2 = [0.05, 0.0, 0.11999999731779099]
     UpdatePipeline(time=0.0, proxy=plotOverLine1)
-    SaveData('../'+cases[i]+'/postProcessing/'+'Uloc_1.csv', proxy=plotOverLine1, PointDataArrays=['U', 'arc_length'])
+    SaveData('../'+cases[i]+'/postProcessing/'+'Uloc_1_t_avrgd.csv', proxy=plotOverLine1, PointDataArrays=['U', 'arc_length'])
 
-    plotOverLine2 = PlotOverLine(registrationName='PlotOverLine2', Input=vtk)
+    plotOverLine2 = PlotOverLine(registrationName='PlotOverLine2', Input=temporalStatistics1)
     plotOverLine2.Point1 = [0.1, 0.0, 0.0]
     plotOverLine2.Point2 = [0.1, 0.0, 0.11999999731779099]
     UpdatePipeline(time=0.0, proxy=plotOverLine2)
-    SaveData('../'+cases[i]+'/postProcessing/'+'Uloc_2.csv', proxy=plotOverLine2, PointDataArrays=['U', 'arc_length'])
+    SaveData('../'+cases[i]+'/postProcessing/'+'Uloc_2_t_avrgd.csv', proxy=plotOverLine2, PointDataArrays=['U', 'arc_length'])
 
-    plotOverLine3 = PlotOverLine(registrationName='PlotOverLine3', Input=vtk)
+    plotOverLine3 = PlotOverLine(registrationName='PlotOverLine3', Input=temporalStatistics1)
     plotOverLine3.Point1 = [0.15, 0.0, 0.0]
     plotOverLine3.Point2 = [0.15, 0.0, 0.11999999731779099]
     UpdatePipeline(time=0.0, proxy=plotOverLine3)
-    SaveData('../'+cases[i]+'/postProcessing/'+'Uloc_3.csv', proxy=plotOverLine3, PointDataArrays=['U', 'arc_length'])
+    SaveData('../'+cases[i]+'/postProcessing/'+'Uloc_3_t_avrgd.csv', proxy=plotOverLine3, PointDataArrays=['U', 'arc_length'])
 
     print(cases[i], 'data saved')

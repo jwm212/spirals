@@ -16,24 +16,24 @@ def U_extract(file):
         reader = csv.DictReader(f, delimiter=',')
         for row in reader:
             x.append(float(row['arc_length']))
-            u.append(float(row['U:0']))  # Access by column header instead of column number
-            v.append(float(row['U:1']))
-            w.append(float(row['U:2']))
+            u.append(float(row['U_average:0']))  # Access by column header instead of column number
+            v.append(float(row['U_average:1']))
+            w.append(float(row['U_average:2']))
             
         x = np.array(x)
         u = np.array(u)
         #v = np.array(v)
         #w = np.array(w)
         
-        x = x*100
+        #x = x*100  #convert to cm
         #Umag = np.sqrt((u**2)+(v**2)+(w**2))*1000
         #print(Umag.shape)
         U_final = np.array((x, u*100))#Umag
         
         return U_final
     
-cases = np.array(["deg0", "deg45", "deg90", "deg135", "deg180"])
-files = np.array(['Uloc_1.csv', 'Uloc_2.csv', 'Uloc_3.csv'])
+cases = np.array(["v0.05", "v0.1", "v0.2", "v0.3", "v0.4", "v0.5"])
+files = np.array(['Uloc_1_t_avrgd.csv', 'Uloc_2_t_avrgd.csv', 'Uloc_3_t_avrgd.csv'])
 arr = np.arange(0,len(cases),1)
 #Uloc1 = np.empty((2,1001))
 #Uloc1 = U_extract('n80/Uloc1.csv')
@@ -64,10 +64,10 @@ for i in range(len(files)):
         print(f"Loading: {file_path}")
         data = U_extract(dir + files[i])
         print(f"First 5 u values for {cases[j]}: {data[1][:5]}")
-        axs[col].plot(data[1], data[0], linewidth=1, label=f'{cases[j]}')
+        axs[col].plot(data[1], data[0]/0.04, linewidth=1, label=f'{cases[j]}')
 
 for ax in axs.flat:
-    ax.set(xlabel='u (cm/s)', ylabel='z (cm)')
+    ax.set(xlabel='u (cm/s)', ylabel='z/L (cm)')
     ax.set_xticks([0,5,10])
     
 for ax in axs.flat:

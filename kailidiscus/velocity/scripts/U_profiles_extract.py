@@ -26,12 +26,16 @@ from paraview.simple import *
 #### disable automatic camera reset on 'Show'
 paraview.simple._DisableFirstRenderCameraReset()
 
-cases = np.array(["deg0", "deg45", "deg90", "deg135", "deg180"])
+cases = np.array(["v0.05", "v0.1", "v0.2", "v0.3", "v0.4", "v0.5"])
 
 arr = np.arange(0,len(cases),1)
 
 for i in arr:
-    vtk = LegacyVTKReader(registrationName= cases[i]+'_40000.vtk', FileNames=['../'+cases[i]+'/VTK/'+cases[i]+'_40000.vtk'])
+    # find max timestep file
+    timestep_files = ['../'+cases[i]+'/VTK/'+f for f in os.listdir('../'+cases[i]+'/VTK/') if f.endswith('.vtk')]
+    max_timestep_file = max(timestep_files, key=lambda x: int(x.split('_')[-1].split('.')[0]))
+    max_timestep = max_timestep_file.split('_')[-1].split('.')[0]
+    vtk = LegacyVTKReader(registrationName= cases[i]+'_400000.vtk', FileNames=['../'+cases[i]+'/VTK/'+cases[i]+'_40000.vtk'])
     
     plotOverLine1 = PlotOverLine(registrationName='PlotOverLine1', Input=vtk)
     plotOverLine1.Point1 = [0.05, 0.0, 0.0]
