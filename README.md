@@ -94,3 +94,5 @@ This shell script runs python scripts (using `pvpython`) on the `gpu` queue to p
 [ ] Automate x-y profile figure creation.
 
 [ ] create time-averaged colormap profiles.
+
+[ ] re-run Helicoplacus to get full dataset
