@@ -31,7 +31,7 @@ errors_Cd = np.zeros((2, len(taxon)))  # 2 rows for lower and upper uncertainty
 errors_Cl = np.zeros((2, len(taxon)))
 
 # Frontal areas in m^2 for each taxon
-A_frontal = np.array([0.000792, 0.000284, 0.00114, 0.00106, 0.000443, 0.0000331])
+A_frontal = np.array([0.000792, 0.000284, 0.00114, 0.00106, 0.000443, 0.0000331]) # frontal area for Helicocystis straight is already defined correctly in its controlDict: 0.00024/0.00024 = 1.
 
 # Extracting data and rescaling to correct frontal area
 for i in arr:
