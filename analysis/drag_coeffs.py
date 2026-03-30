@@ -24,14 +24,14 @@ def extract_coeffs(filename):
                     Cd_list.append(float(parts[2]))
         return np.array(Cd_list)
 
-taxon = np.array(["gogia_palmeri", "gogia_spiralis", "stromatocystites",  "kailidiscus", "helicoplacus", "helicocystis"])
+taxon = np.array(["gogia_palmeri", "gogia_spiralis", "stromatocystites",  "kailidiscus", "helicocystis_straight", "helicocystis", "helicoplacus"])
 arr = np.arange(0,len(taxon),1)
 max_Cd, mean_Cd, min_Cd = (np.zeros(len(taxon)) for _ in range(3))
 errors_Cd = np.zeros((2, len(taxon)))  # 2 rows for lower and upper uncertainty
 errors_Cl = np.zeros((2, len(taxon)))
 
 # Frontal areas in m^2 for each taxon
-A_frontal = np.array([0.000792, 0.000284, 0.00114, 0.00106, 0.000443, 0.0000331]) # frontal area for Helicocystis straight is already defined correctly in its controlDict: 0.00024/0.00024 = 1.
+A_frontal = np.array([0.000792, 0.000284, 0.00114, 0.00106, 0.00024, 0.0000331, 0.000443]) # frontal area for Helicocystis straight is already defined correctly in its controlDict: 0.00024/0.00024 = 1.
 
 # Extracting data and rescaling to correct frontal area
 for i in arr:
@@ -61,20 +61,20 @@ print(errors_Cd)
 plt.rcParams.update({'font.size': 8})
 # replaced plotting block to alternate marker and color per point
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(6, 4), dpi=300)
-pl_taxa = np.array(["Gogia palmeri", "Gogia spiralis", "Stromatocystites",  "Kailidiscus", "Helicoplacus", "Helicocystis"])
-labels = [r"$\it{Gogia}$ $\it{palmeri}$", r"$\it{Gogia}$ $\it{spiralis}$", r"$\it{Stromatocystites}$",  r"$\it{Kailidiscus}$", r"$\it{Helicoplacus}$", r"$\it{Helicocystis}$"]
+pl_taxa = np.array(["Gogia palmeri", "Gogia spiralis", "Stromatocystites",  "Kailidiscus", "Helicocystis straight", "Helicocystis", "Helicoplacus"])
+labels = [r"$\it{Gogia}$ $\it{palmeri}$", r"$\it{Gogia}$ $\it{spiralis}$", r"$\it{Stromatocystites}$",  r"$\it{Kailidiscus}$", r"$\it{Helicocystis}$ (straight)", r"$\it{Helicocystis}$", r"$\it{Helicoplacus}$"]
 x = np.arange(len(pl_taxa))
 
 # alternating markers and colours: even -> 'x' blue, odd -> 'o' orange
-markers = ['x', 'o', 'x', 'o', 'o', 'o']
-colors = ['C0', 'C1', 'C0', 'C1', 'red', 'C1']
+markers = ['x', 'o', 'x', 'o', 'x','o', 'o']
+colors = ['C0', 'C1', 'C0', 'C1', 'C0', 'C1', 'red',]
 
 for i in range(len(pl_taxa)):
     xi = [x[i]]
     yi = [mean_Cd[i]]
     err = errors_Cd[:, i].reshape(2, 1)  # shape (2,1) matches one y value
 
-    ax.scatter(xi, yi, marker=markers[i], color=colors[i], s=60, zorder=3)
+    ax.scatter(xi, yi, marker=markers[i], color=colors[i], s=20, zorder=3)
     ax.errorbar(xi, yi, yerr=err, fmt='none', ecolor=colors[i], capsize=3, zorder=2)
 
 ax.set_xticks(x)
