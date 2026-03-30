@@ -10,5 +10,5 @@ apptainer run --bind ~/projects/nhm/jmcdermo/:/mnt --pwd /mnt/spirals/helicocyst
 foamCleanTutorials &&
 blockMesh &&
 snappyHexMesh -overwrite | tee log.snappyHexMesh &&
-checkMesh | tee log.checkMesh &&
-foamToVTK -faceSet wrongFaces -time 0"
+checkMesh | tee log.checkMesh
+"
