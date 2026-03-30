@@ -1,3 +1,24 @@
+# Hydrodynamic analysis of spiral feeding structures in Cambrian echnioderms
+## Taxa
+- `/gogia_palmeri`
+- `/gogia_spiralis`
+- `/helicocystis`
+- `/helicocystis_straight`
+- `/helicoplacus`
+- `/kailidiscus`
+- `/stromatocystites`
+### Inside each taxon folder:
+- `/Re100`, `/Re500`, `/Re1000`, `/Re5000`, `/Re10000`: OpenFOAM cases for varying Reynolds number. 
+- `/scripts`: shell scripts for running the cases and performing initial postprocessing.
+
+## `/phylogenetic_analysis`
+Analysis of spiral structures across echinoderm phylogeny in MrBayes.
+
+## `/analysis`
+- `functions.py` python module containing all data analysis functions used.
+- `parameters.py` python module containing objects for each taxon defining all relevant parameters e.g. characteristic length L, and an object for environmental parameters.
+- `drag_analysis.ipynb` jupyter notebook producing figure analysing drag across all taxa.
+
 ## starting a new CFD project
 - created folder
 - `git init` to create new local git repository
