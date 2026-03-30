@@ -2,7 +2,7 @@
 # SLURM submit file for Paraview server filename: paraview_server_job.submit
 #SBATCH --partition=gpu
 #SBATCH -t 06:00:00
-#SBATCH --mem=16G
+#SBATCH --mem=32G
 #SBATCH --gpus=1
 # Set a port for running the paraview server connection
 export PV_ACCESSPORT=11111
