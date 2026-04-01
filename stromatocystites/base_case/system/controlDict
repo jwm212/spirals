@@ -35,11 +35,11 @@ writeInterval   1;
 
 purgeWrite      0;
 
-writeFormat     ascii;
+writeFormat     binary;
 
 writePrecision  7;  // 6
 
-writeCompression off;
+writeCompression on;
 
 timeFormat      general;
 
@@ -63,8 +63,8 @@ functions
         CofR            (0 0 0);
         pitchAxis       (0 0 1);
         magUInf         0.05;
-        lRef            0.006;
-        Aref            0.00024;        // height*length = (40e-3)*(6e-3)
+        lRef            0.03;
+        Aref            0.00114;        // see /analysis/parameters.py
     }
 }
 }
