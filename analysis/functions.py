@@ -94,29 +94,33 @@ def calc_residence_time(taxon, file, D, U_0):
         #residence_velocity = D/residence_time
         return residence_time
 
-def calc_FFT(taxon, file, L):
-    dir = '/home/jmcdermo/projects/nhm/jmcdermo/spirals/' + taxon + '/video/base_case/postProcessing/'
+def calc_FFT(taxon, file, L, Re, flow_through_time, endTime, writeInterval, nu):
+    # This function, for a given taxon and Re, takes lateral velocity data measured at a probed location in Paraview and calculates the 
+    # power spectral density using Welch's method, and returns the frequency, Strouhal number and PSD values for plotting.
+    dir = '/home/jmcdermo/projects/nhm/jmcdermo/spirals/' + taxon + '/Re'+ str(Re) + '/postProcessing/'
     with open(dir + file) as f:
-        v = []
+        v = [] # empty array for U_y data
         reader = csv.DictReader(f, delimiter=',')
         for row in reader:
-            v.append(float(row['avg(U (1))']))
+            v.append(float(row['avg(U (1))'])) # read in data
 
-    v = np.array(v)*100
-    v = np.abs(v[750:])
-    t = np.arange(30,60+0.04,0.04) #final 30 seconds of 60s run
-    fs = 1/0.04
+    v = np.array(v)
+    print("Length of velocity data: ", len(v)) # check length of velocity data
+    print("length of flow_through_time: ", flow_through_time/writeInterval)
+    v = v[int(flow_through_time/writeInterval):] # index array to remove data from first flow_through_time (spin-up) to the end of the sim.
+    t = np.arange(flow_through_time,endTime+writeInterval,writeInterval) # create time array
+    print("Time values sampled: ", min(t), " to ", max(t)) # check time values
+    fs = 1/writeInterval # sampling frequency
 
-    f, pxx = welch(v, fs)
-    U = 0.1
-    st = f*L/U
+    f, pxx = welch(v, fs) # calculate power spectral density using Welch's method
+    st = (f*L**2)/(Re*nu) # calculate Strouhal number
+
     # Find the index of the maximum y value
     max_pxx_index = np.argmax(pxx)
-
     # Retrieve the x value at that index
     max_f_value = f[max_pxx_index]
 
-    print("Peak occurs at :", max_f_value, " Hz")
+    print("Peak occurs at St = ", max_f_value)
 
     return {'frequency': f, 'strouhal': st, 'psd': pxx}
 

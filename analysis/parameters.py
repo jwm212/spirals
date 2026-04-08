@@ -9,16 +9,18 @@ class Taxon(object):
         self.R = R # Radius of base (m)
 
 class Environment(object):
-    def __init__(self, rho_w, rho_calcite, g):
+    def __init__(self, rho_w, rho_calcite, g, nu):
         self.rho_w = rho_w # Density of water (kg/m^3) 
         self.rho_calcite = rho_calcite # Density of calcite (kg/m^3)
         self.g = g # Acceleration due to gravity (ms^-2)
+        self.nu = nu # Kinematic viscosity of water (m^2/s)
 
 # Define environment:
 Env1 = Environment(
     rho_w = 1025,
     rho_calcite = 2710,
-    g = 9.81
+    g = 9.81,
+    nu = 1.04E-6
 )
 
 # Define taxa:
@@ -47,7 +49,7 @@ Helicocystis_straight = Taxon(
     label = r"$\it{Helicocystis}$ (straight)",
     A_frontal = 0.00024,
     V = 6.5E-8,
-    L = 0.012,
+    L = 0.003,
     r = 0.00738148,
     R = 1E-4
 )
@@ -57,7 +59,7 @@ Helicocystis = Taxon(
     label = r"$\it{Helicocystis}$",
     A_frontal = 0.0000331,
     V = 6.2E-8,
-    L = 0.012,
+    L = 0.003,
     r = 0.00738148,
     R = 1E-4
 )
