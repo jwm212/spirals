@@ -25,20 +25,20 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         645; // 5*flow_through_time.  
+endTime         65; //5*flow_through_time (64.5)  
 
-deltaT          0.2;	// width of smallest cell ~6E-4 m. CFL cond: t >= x/u = 6E-4/0.0033 = 0.18
+deltaT          0.005;	// width of smallest cell ~6E-4 m. CFL cond: t >= x/u = 6E-4/0.033 = 0.018 s
 
 writeControl    runTime;
 
-writeInterval   2; // Assuming St~0.2, frequency of vortex shedding f = St*U/L = 0.2*0.0033/0.03 = 0.022 Hz, period T = 1/f = 45s
-                   // If we want around 20 datapopints per vortex shed, would need datapoint every ~2s. 
+writeInterval   0.2; // Assuming St~0.2, frequency of vortex shedding f = St*U/L = 0.2*0.033/0.03 = 0.22 Hz, period T = 1/f = 4.5s
+                   // If we want around 20 datapopints per vortex shed, would need datapoint every ~0.2s. 
 
 purgeWrite      0;
 
 writeFormat     binary;
 
-writePrecision  7;  // 6
+writePrecision  7;  
 
 writeCompression off;
 
@@ -54,16 +54,16 @@ functions
         type            forceCoeffs;
         libs            ("libforces.so");
         writeControl    writeTime;
-        writeInterval   2;
+        writeInterval   1; 
         patches         (HH);
         rho             rhoInf;
         log             true;
-        rhoInf          1025;
+        rhoInf          1000;
         liftDir         (0 0 1);
         dragDir         (1 0 0);
         CofR            (0 0 0);
         pitchAxis       (0 0 1);
-        magUInf         0.0033;
+        magUInf         0.033; // UPDATE
         lRef            0.03;
         Aref            0.00114;        // see /analysis/parameters.py
     }
