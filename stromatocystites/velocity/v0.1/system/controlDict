@@ -46,6 +46,7 @@ timeFormat      general;
 timePrecision   6;
 
 runTimeModifiable true;
+/*
 functions
 {
    forces
@@ -67,6 +68,42 @@ functions
         Aref            0.00024;        // height*length = (40e-3)*(6e-3)
     }
 }
-}
+*/
+/*
+functions
+{
+    forces
+    {
+        type forces;
+        libs ("libforces.so");
 
+        writeControl writeTime;
+
+        patches (HH);
+
+        rho rhoInf;
+        rhoInf 1025;
+
+        CofR (0 0 0);
+
+        log true;
+    }
+}
+}
+*/
+functions
+{
+    forces
+        {
+            type            forces; // Use the correct force type
+            libs            ("libforces.so");    // Include library
+            writeControl    writeTime;            // Output frequency
+            writeInterval   1;
+            patches         ("HH"); // Patches to calculate forces on
+            rho             rhoInf;              // Density handling
+            rhoInf          1025;               // Value of rhoInf (kg/m^3)
+            CofR            (0 0 0);
+            viscous         no;             // Center of rotation for moments
+        }
+}
 // ************************************************************************* //
