@@ -4,11 +4,13 @@
 #SBATCH -t 06:00:00
 #SBATCH --mem=32G
 #SBATCH --gpus=1
+#SBATCH --cpus-per-task=4
+#SBATCH --output=paraview_server_job.out
 # Set a port for running the paraview server connection
 export PV_ACCESSPORT=11111
 
 # For single CPU server job
-pvserver --server-port=$PV_ACCESSPORT --log=server-log.txt
+#pvserver --server-port=$PV_ACCESSPORT --log=server-log.txt
 
 # For parallel server
-# mpirun -np $SLURM_NTASKS pvserver --server-port=$PV_ACCESSPORT
+mpirun --use-hwthread-cpus -n 4 --oversubscribe pvserver --server-port=$PV_ACCESSPORT 
