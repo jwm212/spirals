@@ -1,0 +1,12 @@
+p(0){280@Pelmatozoa}	9.578754e-01
+p(1){280@Pelmatozoa}	4.212463e-02
+
+p(0){280@Eleutherozoa}	7.642912e-01
+p(1){280@Eleutherozoa}	2.357088e-01
+
+p(0){280@Radial_echinos}	9.466023e-01
+p(1){280@Radial_echinos}	5.339766e-02
+
+p(0){280@Echinodermata}	9.942394e-01
+p(1){280@Echinodermata}	5.760640e-03
+
