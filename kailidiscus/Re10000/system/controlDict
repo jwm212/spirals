@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            ("libOpenFOAM.so" "libfieldFunctionObjects.so");
+
+application     pisoFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         6.5;  //5* flow_through_time 
+
+deltaT          0.0005;	// width of smallest cell ~6E-4 m. CFL cond: t >= x/u = 6E-4/0.333 = 0.0018 s
+
+writeControl    runTime;
+
+writeInterval   0.02; // Assuming St~0.2, frequency of vortex shedding f = St*U/L = 0.2*0.333/0.03 = 2.226 Hz, period T = 1/f = 0.45s
+                   // If we want around 20 datapopints per vortex shed, would need datapoint every ~0.02s.
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  7;  // 6
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+functions
+{
+   forces
+    {
+        type            forceCoeffs;
+        libs            ("libforces.so");
+        writeControl    writeTime;
+        writeInterval   1;
+        patches         (HH);
+        rho             rhoInf;
+        log             true;
+        rhoInf          1000;
+        liftDir         (0 0 1);
+        dragDir         (1 0 0);
+        CofR            (0 0 0);
+        pitchAxis       (0 0 1);
+        magUInf         0.333;
+        lRef            0.03;
+        Aref            0.00106; // see /analysis/parameters.py
+    }
+}
+}
+
+// ************************************************************************* //

@@ -1,0 +1,72 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            ("libOpenFOAM.so" "libfieldFunctionObjects.so");
+
+application     pisoFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         0.54; 
+
+deltaT          0.000005;	// smallest deltax = 2E-5, so CFL condition: deltaT < deltax/U = 2E-5/1.67 = 1.2E-5. 1e-5 didnt work, so 0.5e-5 chosen.
+
+writeControl    runTime;
+
+writeInterval   0.001;
+
+purgeWrite      0;
+
+writeFormat     binary; //ascii
+
+writePrecision  7;  // 6
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+functions
+{
+   forces
+    {
+        type            forceCoeffs;
+        libs            ("libforces.so");
+        writeControl    writeTime;
+        writeInterval   1;
+        patches         (HH);
+        rho             rhoInf;
+        log             true;
+        rhoInf          1000;
+        liftDir         (0 0 1);
+        dragDir         (1 0 0);
+        CofR            (0 0 0);
+        pitchAxis       (0 0 1);
+        magUInf         1.67; // CHECK
+        lRef            0.003;
+        Aref            0.0000331; // see /analysis/parameters.py
+    }
+}
+}
+
+// ************************************************************************* //
