@@ -2,27 +2,28 @@
 # Module containing functions for reading in a processing CFD data for plotting
 import numpy as np
 import pandas as pd
+import parameters as par
 import csv
 from scipy.signal import welch
 
-def read_drag(taxon, A_frontal):
+def read_drag(taxon, Re, flow_through_time, write_interval):
     # Read the forceCoeffs.dat file and extract Cd values from timestep 30 onwards, finds mean of those values,
     # and errors based on min and max values.
-    filename = "../" + taxon + "/velocity/v0.1/postProcessing/forces/0/forceCoeffs.dat"
+    filename = "../" + taxon + "/Re" + str(Re) + "/postProcessing/forces/0/forceCoeffs.dat"
     with open(filename, 'r') as file:
         lines = file.readlines()
         if not lines:
             raise ValueError("The file is empty.")
-        data_lines = lines[29:]  # take data from 30s onwards
+        data_lines = lines[int(flow_through_time/write_interval):]  # take data from 1*flowthrough_time onwards to ensure we are in the steady state of the sim.
         Cd_list = []
         for line in data_lines:
             if line.strip() and not line.startswith('#'):
                 parts = line.split()
                 if len(parts) > 2:
                     Cd_list.append(float(parts[2]))
-    mean_Cd = np.mean(Cd_list)*0.00024/A_frontal
-    max_Cd = np.max(Cd_list)*0.00024/A_frontal
-    min_Cd = np.min(Cd_list)*0.00024/A_frontal
+    mean_Cd = np.mean(Cd_list)#*0.00024/A_frontal # no longer needed - A_frontal correctly defined in openFOAM case.
+    max_Cd = np.max(Cd_list)#*0.00024/A_frontal
+    min_Cd = np.min(Cd_list)#*0.00024/A_frontal
     error_Cd = np.array([mean_Cd - min_Cd, max_Cd - mean_Cd])
     Cd_data = {"taxon": taxon,
                "mean": mean_Cd, 
@@ -78,9 +79,9 @@ def read_FFT(taxon, L):
         
         return df
 
-def calc_residence_time(taxon, file, D, U_0): 
+def calc_residence_time(taxon, file, D, Re): 
     # Reads in helicity data from paraview, calculates returns non-dimensional residence time t*
-    dir = '../' + taxon +'/velocity/v0.1/postProcessing/'
+    dir = '../' + taxon.name +'/Re' + str(Re) + '/postProcessing/'
     with open(dir + file) as f:
         #row_count = sum(1 for row in f)
         H = []
@@ -89,9 +90,9 @@ def calc_residence_time(taxon, file, D, U_0):
         for row in reader:
             H.append(float(row['Helicity']))  # Access by column header instead of column number
 
-        H = np.array(H)
-        residence_time = H*D/U_0
-        #residence_velocity = D/residence_time
+        H = np.array(np.abs(H))
+        residence_time = (H*D*taxon.L)/(par.Env1.nu*Re)
+
         return residence_time
 
 def calc_FFT(taxon, file, L, Re, flow_through_time, endTime, writeInterval, nu):
@@ -105,22 +106,25 @@ def calc_FFT(taxon, file, L, Re, flow_through_time, endTime, writeInterval, nu):
             v.append(float(row['avg(U (1))'])) # read in data
 
     v = np.array(v)
-    print("Length of velocity data: ", len(v)) # check length of velocity data
-    print("length of flow_through_time: ", flow_through_time/writeInterval)
+    #print("     Length of velocity data: ", len(v)) # check length of velocity data
+    #print("     length of flow_through_time: ", flow_through_time/writeInterval)
     v = v[int(flow_through_time/writeInterval):] # index array to remove data from first flow_through_time (spin-up) to the end of the sim.
     t = np.arange(flow_through_time,endTime+writeInterval,writeInterval) # create time array
-    print("Time values sampled: ", min(t), " to ", max(t)) # check time values
+    #print("     Time values sampled: ", min(t), " to ", max(t)) # check time values
     fs = 1/writeInterval # sampling frequency
 
-    f, pxx = welch(v, fs) # calculate power spectral density using Welch's method
+    f, pxx = welch(v, fs, 
+                   nperseg=64, # 64, 128
+                   scaling='density'
+                   ) # calculate power spectral density using Welch's method
     st = (f*L**2)/(Re*nu) # calculate Strouhal number
 
     # Find the index of the maximum y value
     max_pxx_index = np.argmax(pxx)
     # Retrieve the x value at that index
-    max_f_value = f[max_pxx_index]
+    max_st_value = st[max_pxx_index]
 
-    print("Peak occurs at St = ", max_f_value)
+    print("     Peak occurs at St = ", max_st_value)
 
     return {'frequency': f, 'strouhal': st, 'psd': pxx}
 
