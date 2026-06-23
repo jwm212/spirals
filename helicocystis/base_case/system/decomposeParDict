@@ -15,9 +15,9 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-numberOfSubdomains 24;
+numberOfSubdomains 48;  //2.2E6 cells, so 48 subdomains gives about 45k cells per subdomain
 
-method          simple;
+method          scotch;
 
 simpleCoeffs
 {
